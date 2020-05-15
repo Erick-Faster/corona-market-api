@@ -32,12 +32,14 @@ _request_parser.add_argument('done',
 
 class Request(Resource):
 
+    
     def get(self, id):
         request = RequestModel.find_by_id(id)
         if request:
             return request.json()
         return {'message': 'request not found'}, 404
 
+    @jwt_required
     def put(self,id):
         data = _request_parser.parse_args() #Validacao das condicoes de entrada
 
@@ -55,6 +57,7 @@ class Request(Resource):
         request.save_to_db()
         return request.json()
 
+    @jwt_required
     def delete(self, id):
         request = RequestModel.find_by_id(id)
         if request:

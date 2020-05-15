@@ -55,7 +55,7 @@ class Item(Resource):
 
         return {'message': 'Item deleted'}
         
-
+    @jwt_required
     def put(self,name):
         data = Item.parser.parse_args() #Validacao das condicoes de entrada
 
