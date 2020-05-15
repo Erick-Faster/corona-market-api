@@ -12,17 +12,11 @@ from flask_jwt_extended import (
 
 from blacklist import BLACKLIST
 from models.user import UserModel
+from models.userinfo import UserInfoModel
 
 #_user_ -> private
-_user_parser = reqparse.RequestParser()
-_user_parser.add_argument('name',
-                          type=str,
-                          required=True,
-                          help="This field cannot be blank")
-_user_parser.add_argument('email',
-                          type=str,
-                          required=True,
-                          help="This field cannot be blank")                          
+
+_user_parser = reqparse.RequestParser()                        
 _user_parser.add_argument('username',
                           type=str,
                           required=True,
@@ -54,7 +48,7 @@ class UserRegister(Resource):
         user = UserModel(**data) # = **data = data['username'], data['password']
         user.save_to_db()
 
-        return {"message": "User created successfully!"}, 201
+        return user.json(), 201
 
 class User(Resource):
 
@@ -78,9 +72,7 @@ class CurrentUser(Resource):
     @jwt_required
     def get(self):
         try:
-            print("aqui")
             user_id = get_jwt_identity()
-            print (user_id)
         except:
             return{'message': "Auth verification Failed"}
 

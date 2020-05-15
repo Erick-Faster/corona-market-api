@@ -14,8 +14,8 @@ class RequestModel(db.Model):
     done = db.Column(db.String(3))
     date_posted = db.Column(db.String())
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('UserModel')
+    userinfo_id = db.Column(db.Integer, db.ForeignKey('usersinfo.id'))
+    userinfo = db.relationship('UserInfoModel')
 
     items = db.relationship('ItemModel', lazy='dynamic') #retorna lista // lazy=dynamic -> nao cria um objeto pra cada item. 
 
@@ -25,13 +25,13 @@ class RequestModel(db.Model):
         self.author = author
         self.accepted = accepted
         self.done = done
-        self.user_id = get_jwt_identity()
+        self.userinfo_id = get_jwt_identity()
         self.date_posted = str(datetime.now().strftime("%x às %X"))
 
     def json(self):
         return {
             'id': self.id,
-            'user_id': self.user_id,
+            'userinfo_id': self.userinfo_id,
             'name': self.name,
             'address': self.address,
             'author': self.author,
@@ -51,7 +51,7 @@ class RequestModel(db.Model):
 
     @classmethod
     def find_by_user_id(cls,user_id):
-        return cls.query.filter_by(user_id=user_id)
+        return cls.query.filter_by(userinfo_id=user_id)
 
     @classmethod
     def find_all(cls):

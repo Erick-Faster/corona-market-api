@@ -6,25 +6,23 @@ class UserModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20))
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
     password = db.Column(db.String(20))
 
-    requests = db.relationship('RequestModel', lazy='dynamic')
+    userinfos = db.relationship('UserInfoModel', lazy='dynamic')
 
-    def __init__(self, username, password, name, email):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.name = name
-        self.email = email
 
     def json(self):
         return {
             'id': self.id,
             'username': self.username,
-            'name': self.name,
-            'email': self.email
-        }
+            'message': 'User created successfully!'}
+    
+    @property #Transforma atributo em private qdo alguem chamar por self.id
+    def get_id(self):
+         return self._id
 
     def save_to_db(self):
         db.session.add(self)

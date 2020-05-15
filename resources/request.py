@@ -56,7 +56,7 @@ class Request(Resource):
         return request.json()
 
     def delete(self, id):
-        request = RequestModel.find_by_name(id)
+        request = RequestModel.find_by_id(id)
         if request:
             request.delete_from_db()
 

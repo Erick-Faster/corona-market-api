@@ -5,6 +5,7 @@ from flask import jsonify
 from db import db
 
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh, CurrentUser
+from resources.userinfo import UserInfo, UserInfos
 from resources.item import Item, ItemList
 from resources.request import Request, RequestList, RequestUsers, NewRequest
 from datetime import timedelta
@@ -75,12 +76,15 @@ def revoked_token_callback():
         'error': 'token_revoked'
     }), 401
 
+
 api.add_resource(RequestUsers, '/requests_user')
 api.add_resource(RequestList, '/requests')
 api.add_resource(NewRequest, '/request')
 api.add_resource(Request, '/request/<int:id>')
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
+api.add_resource(UserInfo, '/userinfo')
+api.add_resource(UserInfos, '/userinfos')
 api.add_resource(UserRegister, '/register')
 api.add_resource(CurrentUser, '/currentuser')
 api.add_resource(User, '/user/<int:user_id>')
@@ -90,4 +94,4 @@ api.add_resource(TokenRefresh, '/refresh')
 
 if __name__ == '__main__': #evita que, ao importar app, nao execute novamente,
     db.init_app(app)
-    app.run(port=5000, debug=True) #debug mostra msgs de erro
+    app.run(port=5080, debug=True) #debug mostra msgs de erro
